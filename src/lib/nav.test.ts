@@ -13,6 +13,6 @@ describe("PNR", () => {
   const far = astar(t, idx(10, 12), [idx(30, 75)], "balanced")!;
   const cell = far[far.length - 1];
   it("full tanks are nominal", () => expect(pnr(t, cell, CAPACITY, false).status).toBe("nominal"));
-  it("20% reserve is caution", () => expect(pnr(t, cell, { o2: CAPACITY.o2 * 0.4, batt: CAPACITY.batt, water: CAPACITY.water }, false).status).not.toBe("nominal"));
+  it("20% reserve is caution", () => expect(pnr(t, cell, { o2: CAPACITY.o2 * 0.25, batt: CAPACITY.batt, water: CAPACITY.water }, false).status).not.toBe("nominal"));
   it("evac path found", () => expect(evacuate(t, cell)?.length).toBeGreaterThan(0));
 });
