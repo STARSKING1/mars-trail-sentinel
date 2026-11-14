@@ -311,7 +311,7 @@ function App({ terrain: t, source, online }: { terrain: Terrain; source: string 
                   <Stat label="Duration" value={fmtT(T.time)} sub="walking only" />
                   <Stat label="O₂ / Battery" value={`${(T.o2 * 1000).toFixed(0)} g`} sub={`${T.batt.toFixed(0)} Wh · ${T.water.toFixed(2)} kg H₂O`} />
                   <Stat label="Dose" value={`${(T.dose * 1000).toFixed(1)} µSv`} sub={`${T.sci} mineral cells crossed`} />
-                  <Stat label="LoS gaps" value={`${((T.noLos / Math.max(1, P.cells.length)) * 100).toFixed(0)}%`} sub="of route out of UHF" tone={T.noLos > P.cells.length * 0.3 ? "warn" : "ok"} />
+                  <Stat label="LoS gaps" value={`${((T.noLos / Math.max(1, plan.prof.cells.length)) * 100).toFixed(0)}%`} sub="of route out of UHF" tone={T.noLos > plan.prof.cells.length * 0.3 ? "warn" : "ok"} />
                   <Stat label="Worst PNR reserve" value={`${(plannedPnr.worst * 100).toFixed(0)}%`} sub={plannedPnr.worst < 0.15 ? "Plan violates critical" : plannedPnr.worst < 0.3 ? "Below caution" : "Within margins"} tone={pnrTone(plannedPnr.worst < 0.15 ? "critical" : plannedPnr.worst < 0.3 ? "caution" : "nominal")} />
                 </div>
               </section>
