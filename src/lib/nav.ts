@@ -101,14 +101,14 @@ export function profile(t: Terrain, cells: number[], sep = false): Profile {
   return P;
 }
 
-export function planRoute(t: Terrain, stops: number[], p: Preset): { cells: number[]; failedLeg: number | null } {
-  const cells: number[] = [stops[0]];
+export function planRoute(t: Terrain, stops: number[], p: Preset): { cells: number[]; stopIdx: number[]; failedLeg: number | null } {
+  const cells: number[] = [stops[0]], stopIdx = [0];
   for (let k = 1; k < stops.length; k++) {
     const leg = astar(t, stops[k - 1], [stops[k]], p);
-    if (!leg) return { cells, failedLeg: k };
-    cells.push(...leg.slice(1));
+    if (!leg) return { cells, stopIdx, failedLeg: k };
+    cells.push(...leg.slice(1)); stopIdx.push(cells.length - 1);
   }
-  return { cells, failedLeg: null };
+  return { cells, stopIdx, failedLeg: null };
 }
 
 export type Consumables = { o2: number; batt: number; water: number };
