@@ -375,7 +375,7 @@ function App({ terrain: t, source, online }: { terrain: Terrain; source: string 
   );
 }
 
-function WaypointModal({ t, cell, n, onRemove }: { t: Terrain; cell: number; n: number; onRemove?: () => void }) {
+function WaypointModal({ t, cell, n, onRemove }: { t: Terrain; cell: number; n: number; onRemove?: (() => void) | undefined }) {
   const ll = cellToLatLon(cell), m = t.mineral[cell];
   const notes = ["Traverse checkpoint — no orbital mineral detection.", "Hydrated Mg/Ca-sulfate signature: layered sulfate-bearing unit. Sample light-toned laminae.", "Fe/Mg phyllosilicate on channel margin: clay-bearing debris — priority for organics context.", "Hematite-cemented boxwork ridge: mineral-filled fracture — core the ridge crest and adjacent hollow."];
   return (

@@ -69,7 +69,7 @@ function renderBase(t: Terrain, layer: Layer, ov: Overlays) {
 
 export type MapProps = {
   terrain: Terrain; layer: Layer; overlays: Overlays; tilt?: boolean; compact?: boolean;
-  route: number[]; altRoute?: number[]; returnRoute?: number[]; evac?: boolean;
+  route: number[]; altRoute?: number[]; returnRoute?: number[] | undefined; evac?: boolean;
   waypoints: number[]; pos?: [number, number] | null; trail?: number[];
   onCellClick?: (cell: number) => void; onWaypointClick?: (k: number) => void;
 };
