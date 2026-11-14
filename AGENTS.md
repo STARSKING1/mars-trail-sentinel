@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Terrain is a deterministic synthetic grid (src/lib/terrain.ts) cached in IndexedDB; bump the cache key when generation changes so stale grids are not reused.
+- All navigation/physiology math lives in pure functions in src/lib/nav.ts with tests in nav.test.ts; UI only calls them.
