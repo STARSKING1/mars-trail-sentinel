@@ -49,7 +49,8 @@ export function generateTerrain(): Terrain {
     let e = -4180 + ((x + y) / (2 * N)) * 210 + n * 35;
     // Scarp (layered sulfate cliff) running diagonally — shelters at its base
     const sd = (y - (52 - x * 0.35 + 6 * Math.sin(x / 9)));
-    e += 38 * smooth(-1.2, 1.2, sd);
+    const gap = Math.exp(-(((x - 27) / 4) ** 2)); // ramp breach through the scarp
+    e += 38 * (1 - gap) * smooth(-1.2, 1.2, sd) + 38 * gap * smooth(-9, 9, sd);
     // Gediz Vallis channel
     const cd = (x - channelCenter(y)) / 4.5;
     const ch = Math.exp(-cd * cd) * smooth(10, 40, y);
