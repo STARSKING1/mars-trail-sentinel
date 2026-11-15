@@ -9,10 +9,10 @@ export const TILE_LAYERS = {
   ctx: { name: 'Gale CTX mosaic', id: 'Gale_CTX_BlockAdj_dd', ext: 'png', max: 12 },
   mola: { name: 'MOLA shaded relief', id: 'Mars_MGS_MOLA_ClrShade_merge_global_463m', ext: 'jpg', max: 7 },
 } as const;
-export type Feature = { type: 'Feature'; properties: Record<string, unknown>; geometry: { type: string; coordinates: any } };
+export type Feature = { type: 'Feature'; properties: Record<string, any>; geometry: { type: string; coordinates: any } };
 export type Collection = { type: 'FeatureCollection'; features: Feature[] };
 export const emptyCollection = (): Collection => ({ type: 'FeatureCollection', features: [] });
-export type Photo = { id: string; sol: number; camera: string; date: string; thumb: string; full: string; credit: string; caption: string; site: number | null; drive: number | null; telemetry: Record<string, unknown> };
+export type Photo = { id: string; sol: number; camera: string; date: string; thumb: string; full: string; credit: string; caption: string; site: number | null; drive: number | null; telemetry: Record<string, any> };
 export type ImageFeed = { photos: Photo[]; total: number | null; matches: number | null; latest: number | null; provider: string };
 export function nasaImage(value: unknown): string {
   if (typeof value !== 'string') return '';
@@ -29,11 +29,11 @@ export function normalizeImages(raw: any, provider = 'NASA JPL'): ImageFeed {
 }
 export function photoLocation(photo: Photo, waypoints: Collection): Feature | undefined {
   if (photo.site == null || photo.drive == null) return undefined;
-  return waypoints.features.find(f => Number(f.properties.site) === photo.site && Number(f.properties.drive) === photo.drive && f.geometry.type === 'Point');
+  return waypoints.features.find(f => Number(f.properties['site']) === photo.site && Number(f.properties['drive']) === photo.drive && f.geometry.type === 'Point');
 }
 export function photoClusters(photos: Photo[], waypoints: Collection): Collection {
   const groups = new Map<string, Feature>();
-  for (const p of photos) { const w = photoLocation(p, waypoints); if (!w) continue; const key = `${p.site}_${p.drive}`; const group = groups.get(key); if (group) group.properties.count = Number(group.properties.count) + 1; else groups.set(key, { type: 'Feature', geometry: w.geometry, properties: { count: 1, imageId: p.id, sol: p.sol, site: p.site, drive: p.drive } }); }
+  for (const p of photos) { const w = photoLocation(p, waypoints); if (!w) continue; const key = `${p.site}_${p.drive}`; const group = groups.get(key); if (group) group.properties['count'] = Number(group.properties['count']) + 1; else groups.set(key, { type: 'Feature', geometry: w.geometry, properties: { count: 1, imageId: p.id, sol: p.sol, site: p.site, drive: p.drive } }); }
   return { type: 'FeatureCollection', features: [...groups.values()] };
 }
 export function routeProfile(route: Collection): { distance: number; elevation: number | null; lon: number; lat: number }[] {

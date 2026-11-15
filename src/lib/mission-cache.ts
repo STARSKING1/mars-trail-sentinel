@@ -9,5 +9,5 @@ export async function writeCache<T>(key: string, value: T) {
 }
 export async function cachedBlob(url: string, signal?: AbortSignal): Promise<Blob> {
   const hit = await readCache<Blob>(url); if (hit) return hit.value;
-  const r = await fetch(url, { signal }); if (!r.ok) throw new Error(`NASA tile unavailable (${r.status})`); const blob = await r.blob(); await writeCache(url, blob); return blob;
+  const r = await fetch(url, { signal: signal ?? null }); if (!r.ok) throw new Error(`NASA tile unavailable (${r.status})`); const blob = await r.blob(); await writeCache(url, blob); return blob;
 }

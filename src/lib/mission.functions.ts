@@ -10,8 +10,8 @@ async function fetchJSON(url: string) {
 export const getImages = createServerFn({ method: 'GET' }).inputValidator(z.object({ site: z.enum(['gale', 'jezero']), sol: z.number().int().min(0).max(20000).nullable(), camera: z.string().max(40), page: z.number().int().min(0).max(10000) })).handler(async ({ data }) => {
   const url = new URL('https://mars.nasa.gov/rss/api/');
   const params: Record<string, string> = { ver: '1.2', feed: 'raw_images', feedtype: 'json', category: SITES[data.site].category, num: '60', page: String(data.page), order: 'sol desc' };
-  if (data.sol != null) params.condition_2 = `${data.sol}:sol:eq`;
-  if (data.camera) params.search = `|${data.camera}`;
+  if (data.sol != null) params['condition_2'] = `${data.sol}:sol:eq`;
+  if (data.camera) params['search'] = `|${data.camera}`;
   Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
   try { const raw = await fetchJSON(url.href); if (!Array.isArray(raw.images)) throw new Error('Invalid feed'); return { data: normalizeImages(raw), error: null, source: url.href }; }
   catch {
@@ -37,7 +37,7 @@ export const getGeology = createServerFn({ method: 'GET' }).inputValidator(z.obj
     const [raw, schema] = await Promise.all([fetchJSON(url.href), fetchJSON(`${source}?f=json`)]);
     if (!Array.isArray(raw.features) || raw.error || raw.exceededTransferLimit) throw new Error('Incomplete geology');
     const features = raw.features.flatMap((f: any) => f.geometry?.rings ? [{ type: 'Feature', properties: f.attributes, geometry: { type: 'Polygon', coordinates: f.geometry.rings } }] : []);
-    const colors: unknown[] = ['match', ['get', 'Unit']];
+    const colors: any[] = ['match', ['get', 'Unit']];
     for (const entry of schema.drawingInfo?.renderer?.uniqueValueInfos ?? []) { const c = entry.symbol?.color; if (Array.isArray(c)) colors.push(entry.value, `rgb(${c[0]},${c[1]},${c[2]})`); }
     colors.push('rgba(0,0,0,0)');
     return { data: { units: { type: 'FeatureCollection', features } as Collection, colors }, error: null, source };
