@@ -2,10 +2,11 @@
 
 ## Live Deployment
 
-Explore the interactive **ARES-NAV** prototype directly in your browser (no installation required):
+Launch the interactive **ARES-NAV** mission control prototype directly in your browser with zero local setup:
 
-* **Live Mission Control App:** [https://mars-trail-sentinel.lovable.app](https://mars-trail-sentinel.lovable.app)
-* **Key Interactive Capabilities:** Offline-first IndexedDB spatial caching, dual-site Martian terrain analysis, and real-time EVA Suit Visor HUD telemetry.
+**Live Mission Control App:** [https://mars-trail-sentinel.vercel.app/](https://mars-trail-sentinel.vercel.app/)
+ **What You Can Test Immediately:**
+ **Offline-First Spatial Engine:** Local IndexedDB terrain caching for uninterrupted field navigation without active telemetry links.
 
 we wanted to build ARES-NAV (Autonomous Reconnaissance & EVA Survival Navigator) as a working, production-grade web application for the 2026 NASA Space Apps Challenge (Interplanetary Survival Guide: Martian Map).
 
