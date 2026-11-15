@@ -60,7 +60,7 @@ export default function MissionMap(p: Props) {
     const tick = () => { if (k >= coords.length) { latest.current.onFlyEnd(); return; } m.flyTo({ center: coords[k], zoom: 14, pitch: 60, bearing: k * 6, duration: 1700 }); k += step; };
     tick(); const timer = setInterval(tick, 1800); return () => { clearInterval(timer); m.stop(); };
   }, [p.flying, p.waypoints, ready]);
-  return <div className="mission-map relative h-full min-h-[420px] bg-background"><div ref={el} className="absolute inset-0" aria-label="NASA Mars Trek mission map" />
+  return <div className="mission-map relative h-full min-h-[420px] bg-background"><div ref={el} className="absolute inset-0 h-full w-full" aria-label="NASA Mars Trek mission map" />
     {!ready && <div className="absolute inset-0 grid place-items-center font-mono text-xs text-accent"><Satellite className="mr-2 inline size-4" />CONNECTING TO MARS TREK…</div>}
     {error && <div role="status" className="absolute bottom-12 left-3 right-16 border border-warning/50 bg-background/90 p-2 text-xs text-warning">{error}</div>}
     <div className="absolute right-4 top-4 flex flex-col gap-1 rounded-md border border-border bg-background/85 p-1 backdrop-blur">
