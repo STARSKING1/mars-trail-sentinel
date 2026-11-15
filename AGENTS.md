@@ -30,5 +30,8 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## Project rules
-- Terrain is a deterministic synthetic grid (src/lib/terrain.ts) cached in IndexedDB; bump the cache key when generation changes so stale grids are not reused.
+- The active app uses NASA/USGS feeds only; old synthetic terrain modules must never be imported into the mission cockpit.
 - All navigation/physiology math lives in pure functions in src/lib/nav.ts with tests in nav.test.ts; UI only calls them.
+- NASA EQ WMTS rasters must be reprojected into MapLibre Mercator tiles in a browser-only protocol; native EQ indices are not XYZ indices.
+- Public mission requests use bounded, allowlisted server functions; IndexedDB stores timestamped mission responses and source tile bytes, never synthetic substitutes.
+- Missing EVA telemetry and environmental measurements remain null; rover elevation is taken only from published coordinates, and photo locations require exact site/drive matching.
