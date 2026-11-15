@@ -5,8 +5,8 @@
 Launch the interactive **ARES-NAV** mission control prototype directly in your browser with zero local setup:
 
 **Live Mission Control App:** [https://mars-trail-sentinel.vercel.app/](https://mars-trail-sentinel.vercel.app/)
- **What You Can Test Immediately:**
- **Offline-First Spatial Engine:** Local IndexedDB terrain caching for uninterrupted field navigation without active telemetry links.
+
+**Offline-First Spatial Engine:** Local IndexedDB terrain caching for uninterrupted field navigation without active telemetry links.
 
 we wanted to build ARES-NAV (Autonomous Reconnaissance & EVA Survival Navigator) as a working, production-grade web application for the 2026 NASA Space Apps Challenge (Interplanetary Survival Guide: Martian Map).
 
