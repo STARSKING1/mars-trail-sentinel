@@ -25,7 +25,7 @@ describe('real mission source rules', () => {
   it('aggregates exact same-location frames without fabricating unmatched markers', () => {
     const groups = photoClusters([photo, { ...photo, id: 'second' }, { ...photo, drive: 5 }], waypoints);
     expect(groups.features).toHaveLength(1);
-    expect(groups.features[0].properties.count).toBe(2);
+    expect(groups.features[0].properties['count']).toBe(2);
   });
   it('preserves real elevations and treats missing or sentinel elevations as unavailable', () => {
     const result = routeProfile({ type: 'FeatureCollection', features: [{ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: [[137.4, -4.6, -4180], [137.401, -4.6], [137.402, -4.6, -9999]] } }] });
