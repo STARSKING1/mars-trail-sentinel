@@ -1,6 +1,13 @@
 # Mars Trail Sentinel
 
-I want to build ARES-NAV (Autonomous Reconnaissance & EVA Survival Navigator) as a working, production-grade web application for the 2026 NASA Space Apps Challenge (Interplanetary Survival Guide: Martian Map).
+## Live Deployment
+
+Explore the interactive **ARES-NAV** prototype directly in your browser (no installation required):
+
+* **Live Mission Control App:** [https://mars-trail-sentinel.lovable.app](https://mars-trail-sentinel.lovable.app)
+* **Key Interactive Capabilities:** Offline-first IndexedDB spatial caching, dual-site Martian terrain analysis, and real-time EVA Suit Visor HUD telemetry.
+
+we wanted to build ARES-NAV (Autonomous Reconnaissance & EVA Survival Navigator) as a working, production-grade web application for the 2026 NASA Space Apps Challenge (Interplanetary Survival Guide: Martian Map).
 
 Target Location & Science Objective: Mount Sharp (Aeolis Mons) Boxwork Formations & Gediz Vallis Margin, Gale Crater (-4.6°S, 137.4°E). Astronauts conduct an EVA to sample mineral-filled fracture ridges while managing steep alluvial slopes, loose regolith traps, and solar radiation.
 
