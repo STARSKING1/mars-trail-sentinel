@@ -23,17 +23,6 @@ Core Architecture & Views:
 
 Build a real, responsive, beautifully styled Mars tactical web app with rich controls, terrain layer toggles, interactive route planning, waypoint modals, telemetry charts, and emergency abort flows.
 
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://mars-trail-sentinel.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/27ce8b88-85ee-46e0-8f42-a5b475dace62).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
