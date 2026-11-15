@@ -22,7 +22,7 @@ export default function MissionMap(p: Props) {
           m.addLayer({ id, type: 'raster', source: id, layout: { visibility: id === 'color' ? 'visible' : 'none' }, paint: { 'raster-fade-duration': 200 } });
         }
         m.addSource('geology', { type: 'geojson', data: emptyCollection() as any });
-        m.addLayer({ id: 'geology-fill', type: 'fill', source: 'geology', paint: { 'fill-color': 'var(--primary)', 'fill-opacity': 0.35 } });
+        m.addLayer({ id: 'geology-fill', type: 'fill', source: 'geology', paint: { 'fill-color': getComputedStyle(document.documentElement).getPropertyValue('--primary').trim(), 'fill-opacity': 0.35 } });
         m.addSource('route', { type: 'geojson', data: emptyCollection() as any });
         const tokens = getComputedStyle(document.documentElement), cyan = tokens.getPropertyValue('--accent').trim(), ochre = tokens.getPropertyValue('--primary').trim();
         m.addLayer({ id: 'route-halo', type: 'line', source: 'route', paint: { 'line-color': tokens.getPropertyValue('--background').trim(), 'line-width': 7 } });

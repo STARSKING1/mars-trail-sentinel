@@ -27,3 +27,19 @@ export const getTraverse = createServerFn({ method: 'GET' }).inputValidator(z.ob
   try { const [route, waypoints] = await Promise.all([fetchJSON(`${base}_traverse.json`), fetchJSON(`${base}_waypoints.json`)]); if (route.type !== 'FeatureCollection' || waypoints.type !== 'FeatureCollection') throw new Error('Invalid mission geometry'); return { data: { route: route as Collection, waypoints: waypoints as Collection }, error: null, source: base }; }
   catch { return { data: null, error: 'NASA traverse is unavailable. No substitute waypoints are shown.', source: base }; }
 });
+export const getGeology = createServerFn({ method: 'GET' }).inputValidator(z.object({ site: z.enum(['gale', 'jezero']) })).handler(async ({ data }) => {
+  const source = 'https://services.arcgis.com/v01gqwM5QqNysAAi/arcgis/rest/services/Tanaka_et_al_2014_Mars_Global_Map_Features/FeatureServer/3';
+  const wkt = 'GEOGCS["GCS_Mars_2000_Sphere",DATUM["D_Mars_2000",SPHEROID["Mars_2000",3396190.0,0.0]],PRIMEM["Reference_Meridian",0.0],UNIT["Degree",0.0174532925199433]]';
+  const [lon, lat] = SITES[data.site].center;
+  const url = new URL(`${source}/query`);
+  Object.entries({ f: 'json', where: '1=1', outFields: '*', geometry: `${lon - 0.6},${lat - 0.6},${lon + 0.6},${lat + 0.6}`, geometryType: 'esriGeometryEnvelope', inSR: JSON.stringify({ wkt }), outSR: JSON.stringify({ wkt }), spatialRel: 'esriSpatialRelIntersects', returnGeometry: 'true', maxAllowableOffset: '0.002', resultRecordCount: '1000' }).forEach(([k, v]) => url.searchParams.set(k, v));
+  try {
+    const [raw, schema] = await Promise.all([fetchJSON(url.href), fetchJSON(`${source}?f=json`)]);
+    if (!Array.isArray(raw.features) || raw.error || raw.exceededTransferLimit) throw new Error('Incomplete geology');
+    const features = raw.features.flatMap((f: any) => f.geometry?.rings ? [{ type: 'Feature', properties: f.attributes, geometry: { type: 'Polygon', coordinates: f.geometry.rings } }] : []);
+    const colors: unknown[] = ['match', ['get', 'Unit']];
+    for (const entry of schema.drawingInfo?.renderer?.uniqueValueInfos ?? []) { const c = entry.symbol?.color; if (Array.isArray(c)) colors.push(entry.value, `rgb(${c[0]},${c[1]},${c[2]})`); }
+    colors.push('rgba(0,0,0,0)');
+    return { data: { units: { type: 'FeatureCollection', features } as Collection, colors }, error: null, source };
+  } catch { return { data: null, error: 'USGS SIM 3292 is unavailable. No inferred geologic units are substituted.', source }; }
+});

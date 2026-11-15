@@ -6,8 +6,8 @@ export const SITES = {
 } as const;
 export const TILE_LAYERS = {
   color: { name: 'Viking global color', id: 'Mars_Viking_MDIM21_ClrMosaic_global_232m', ext: 'jpg', max: 7 },
-  ctx: { name: 'Gale CTX mosaic', id: 'Gale_CTX_BlockAdj_dd', ext: 'png', max: 13 },
-  mola: { name: 'MOLA shaded relief', id: 'Mars_MGS_MOLA_ClrShade_merge_global_463m', ext: 'jpg', max: 6 },
+  ctx: { name: 'Gale CTX mosaic', id: 'Gale_CTX_BlockAdj_dd', ext: 'png', max: 12 },
+  mola: { name: 'MOLA shaded relief', id: 'Mars_MGS_MOLA_ClrShade_merge_global_463m', ext: 'jpg', max: 7 },
 } as const;
 export type Feature = { type: 'Feature'; properties: Record<string, unknown>; geometry: { type: string; coordinates: any } };
 export type Collection = { type: 'FeatureCollection'; features: Feature[] };
