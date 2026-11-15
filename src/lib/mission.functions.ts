@@ -7,6 +7,16 @@ async function fetchJSON(url: string) {
     try { const r = await fetch(url, { signal: AbortSignal.timeout(18000), headers: { Accept: 'application/json' } }); if (!r.ok) throw new Error('Source unavailable'); return await r.json(); } catch (e) { if (attempt === 1) throw e; }
   }
 }
+export const getNASAImage = createServerFn({ method: 'GET' }).inputValidator(z.object({ url: z.string().url().max(1200) })).handler(async ({ data }) => {
+  const url = new URL(data.url);
+  if (url.protocol !== 'https:' || url.hostname !== 'mars.nasa.gov' || !/^\/(mars2020-raw-images|msl-raw-images)\//.test(url.pathname)) throw new Error('Only NASA raw image files are supported');
+  const response = await fetch(url.href, { signal: AbortSignal.timeout(25000) });
+  if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) throw new Error('NASA image unavailable');
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  if (bytes.length > 24000000) throw new Error('Use the NASA link for this large frame');
+  let encoded = ''; for (let i = 0; i < bytes.length; i += 8192) encoded += String.fromCharCode(...bytes.subarray(i, i + 8192));
+  return { base64: btoa(encoded), type: response.headers.get('content-type') ?? 'image/jpeg' };
+});
 export const getImages = createServerFn({ method: 'GET' }).inputValidator(z.object({ site: z.enum(['gale', 'jezero']), sol: z.number().int().min(0).max(20000).nullable(), camera: z.string().max(40), page: z.number().int().min(0).max(10000) })).handler(async ({ data }) => {
   const url = new URL('https://mars.nasa.gov/rss/api/');
   const params: Record<string, string> = { ver: '1.2', feed: 'raw_images', feedtype: 'json', category: SITES[data.site].category, num: '60', page: String(data.page), order: 'sol desc' };

@@ -30,7 +30,7 @@ const STORIES = [
 function RawImage({ url, alt, className }: { url: string; alt: string; className?: string }) {
   const [src, setSrc] = useState(''), [failed, setFailed] = useState(false), [retry, setRetry] = useState(0);
   useEffect(() => { let alive = true, object = ''; const controller = new AbortController(); setSrc(''); setFailed(false); cachedBlob(url, controller.signal).then(blob => { if (!alive) return; object = URL.createObjectURL(blob); setSrc(object); }).catch(() => { if (alive) setFailed(true); }); return () => { alive = false; controller.abort(); if (object) URL.revokeObjectURL(object); }; }, [url, retry]);
-  return src && !failed ? <img src={src} alt={alt} className={className} onError={() => setFailed(true)} /> : <div className={cn('grid place-items-center bg-muted text-muted-foreground', className)}>{failed ? <Button variant="ghost" size="sm" onClick={() => setRetry(r => r + 1)}><RefreshCw />Retry image</Button> : <Camera className="size-5 animate-pulse" />}</div>;
+  return src && !failed ? <img src={src} alt={alt} className={className} onError={() => setFailed(true)} /> : <div className={cn('grid place-items-center bg-muted text-muted-foreground', className)}>{failed ? <span onClick={e => { e.stopPropagation(); setRetry(r => r + 1); }} className="flex items-center gap-2 text-xs"><RefreshCw className="size-3" />Retry image</span> : <Camera className="size-5 animate-pulse" />}</div>;
 }
 function Explorer() {
   const [site, setSite] = useState<Site>('gale'), [layer, setLayer] = useState<BaseLayer>('ctx');

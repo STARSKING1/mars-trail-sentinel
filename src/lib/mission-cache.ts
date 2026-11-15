@@ -1,3 +1,4 @@
+import { getNASAImage } from './mission.functions';
 const DB = 'ares-real-mission-v1';
 type Entry<T> = { value: T; saved: number };
 function openDB(): Promise<IDBDatabase> { return new Promise((resolve, reject) => { const r = indexedDB.open(DB, 1); r.onupgradeneeded = () => r.result.createObjectStore('responses'); r.onsuccess = () => resolve(r.result); r.onerror = () => reject(r.error); }); }
@@ -9,5 +10,10 @@ export async function writeCache<T>(key: string, value: T) {
 }
 export async function cachedBlob(url: string, signal?: AbortSignal): Promise<Blob> {
   const hit = await readCache<Blob>(url); if (hit) return hit.value;
-  const r = await fetch(url, { signal: signal ?? null }); if (!r.ok) throw new Error(`NASA tile unavailable (${r.status})`); const blob = await r.blob(); await writeCache(url, blob); return blob;
+  let blob: Blob;
+  if (new URL(url).hostname === 'mars.nasa.gov') {
+    const image = await getNASAImage({ data: { url } });
+    const bytes = Uint8Array.from(atob(image.base64), c => c.charCodeAt(0)); blob = new Blob([bytes], { type: image.type });
+  } else { const r = await fetch(url, { signal: signal ?? null }); if (!r.ok) throw new Error(`NASA tile unavailable (${r.status})`); blob = await r.blob(); }
+  await writeCache(url, blob); return blob;
 }
